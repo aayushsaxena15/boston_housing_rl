@@ -1,9 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Fri Jan 15 16:41:54 2021
-
-@author: AS080387
-"""
 
 # Converts comma separated value (CSV) files 
 # to Attribute-Relation File Format (ARFF).
