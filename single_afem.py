@@ -90,6 +90,8 @@ def main():
     # loading the dataset
     did = args.dataset
     f_dataset = "data/%d/%d.arff" % (did,did)
+    import pandas as pd
+    data = pd.read_csv('test_set.txt', sep=",", header=[0])
     dataset, meta, tasktype = load(f_path=f_dataset)
 
     # creating q networks based on input and output size of data
@@ -270,6 +272,8 @@ def main():
                     #testdecay = init_pfm / (sum(test_pfm[-2:]) / len(test_pfm[-2:]))
                 epsilon = max(args.min_epsilon,epsilon*args.epsilon_decay * testdecay)
                 #epsilon = max(args.min_epsilon,epsilon*args.epsilon_decay*(init_pfm/test_pfm[]))
+                # saving the predictions in a txt file
+                data.to_csv('sample_prediction_output.txt', sep=',', index=False)
 
 if __name__ == "__main__":
     main()
