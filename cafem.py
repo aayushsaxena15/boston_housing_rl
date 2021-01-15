@@ -135,6 +135,9 @@ def main():
     sess.run(targetNetwork.init_op)
     # saving trained model in a cpkt file
     saver.save(sess,os.path.join(model_dir, "model_0.ckpt"))
+    import pandas as pd
+    data = pd.read_csv('test_set.txt', sep=",", header=[0])
+    
     trainables     = tf.trainable_variables()
     updateOps      = updateTargetGraph(trainables, tau)
     
@@ -220,6 +223,8 @@ def main():
             print(path)
         except:
             pass
+    #saving the predictions in a txt file
+    data.to_csv('sample_prediction_output.txt', sep=',', index=False)
     #saver.save(sess,os.path.join(model_dir, "model.ckpt" ))
 
 
