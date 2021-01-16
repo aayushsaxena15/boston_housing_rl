@@ -136,6 +136,7 @@ def main():
     # saving trained model in a cpkt file
     saver.save(sess,os.path.join(model_dir, "model_0.ckpt"))
     import pandas as pd
+    predictions = []
     data = pd.read_csv('test_set.txt', sep=",", header=[0])
     
     trainables     = tf.trainable_variables()
@@ -217,6 +218,7 @@ def main():
             f = open(os.path.join(out_dir,'loss.csv'),'a')
             f.write("%.8f,%.8f\n" % (result[1],result[2]))
             f.close()
+            predictions.append[result[2]
             #if  (g+1) % SAVE_INTERVAL == 0:
             path = saver.save(sess, os.path.join(model_dir, "model_%d.ckpt" % (g+1) ))
             path = saver.save(sess, os.path.join(out_dir, "model_%d.ckpt" % (g + 1)))
@@ -224,6 +226,11 @@ def main():
         except:
             pass
     #saving the predictions in a txt file
+    #updating data with predictions from above model
+    ctr = 0
+    for idx, row in data.iterrows():
+        row['medv'] = predictions[ctr]
+        ctr += 1
     data.to_csv('sample_prediction_output.txt', sep=',', index=False)
     #saver.save(sess,os.path.join(model_dir, "model.ckpt" ))
 
