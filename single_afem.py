@@ -241,6 +241,7 @@ def main():
                 f.close()
                 # storing the predictions in the test log file based on the trained model from above
                 testdecay = 1
+                predictions = []
                 if (g+1) % args.eval_interval == 0:
 
                     pretransform_test = []
@@ -263,6 +264,7 @@ def main():
                     f = open(os.path.join(out_dir,"test_succeed_feat.csv"),'a')
                     for val in pretransform_test:
                         f.write("%d,%s\n" % (val[0],val[1]))
+                        predictions.append(val[1])
                     f.close()
                     test_pfm.append(env.best_pfm)
                     print("test pfm %.6f" % env.best_pfm)
@@ -273,6 +275,11 @@ def main():
                 epsilon = max(args.min_epsilon,epsilon*args.epsilon_decay * testdecay)
                 #epsilon = max(args.min_epsilon,epsilon*args.epsilon_decay*(init_pfm/test_pfm[]))
                 # saving the predictions in a txt file
+                #updating data variable with predictions from above model
+                ctr = 0
+                for idx, row in data.iterrows():
+                  row['medv'] = predictions[ctr]
+                  ctr += 1
                 data.to_csv('sample_prediction_output.txt', sep=',', index=False)
 
 if __name__ == "__main__":
