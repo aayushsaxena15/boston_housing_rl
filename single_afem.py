@@ -253,9 +253,11 @@ def main():
 
                         for j in range(gamestep):
                             s        = np.copy(env.state)
+                            print("all actions: " + str(env.action_mask))
                             act_mask = np.copy(env.action_mask)
                             Q        = sess.run(modelNetwork.Q_, feed_dict={modelNetwork.inputs: [s]})
                             action   = ma.masked_array(Q, mask=act_mask).argmax()
+                            print("best action: " + str(action))
                             s_next, reward = env.step(action)
                             if env.stop:
                                 break
