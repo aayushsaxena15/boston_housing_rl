@@ -80,12 +80,9 @@ def main():
     test = True
     out_dir = os.path.join(args.out_dir,'safem')
     model_dir = os.path.join(args.out_dir,'safem_model')
-    if not os.path.isdir(args.out_dir):
-        os.mkdir(args.out_dir)
-    if not os.path.isdir(model_dir):
-        os.mkdir(model_dir)
-    if not os.path.isdir(out_dir):
-        os.mkdir(out_dir)
+    if not os.path.isdir(args.out_dir): os.mkdir(args.out_dir)
+    if not os.path.isdir(model_dir):   os.mkdir(model_dir)
+    if not os.path.isdir(out_dir):   os.mkdir(out_dir)
 
     # loading the dataset
     did = args.dataset
@@ -96,7 +93,7 @@ def main():
 
     # creating q networks based on input and output size of data
     n_feats = dataset.shape[1] - 1
-    modelNetwork = Model(opt_size=opt_size, input_size=input_size, name="model",maml=False)
+    modelNetwork  = Model(opt_size=opt_size, input_size=input_size, name="model",maml=False)
     targetNetwork = Model(opt_size=opt_size, input_size=input_size, name="target",maml=False)
 
     globalbuff = [None] * n_feats
@@ -139,8 +136,13 @@ def main():
                     print(tasktype)
                     if multiprocessing > 0:
                         n_jobs = 1
-                    env = Env(dataset, feature=fid,maxdepth=depth,evalcount=budget,opt_type=opt_type,random_state=seed,\
+                        
+                    ##### Where Action are defined  #################################################    
+                    env = Env(dataset, 
+                              feature=fid, 
+                              maxdepth=depth,evalcount=budget,opt_type=opt_type,random_state=seed,\
                               tasktype=tasktype,pretransform=pretransform,n_jobs = n_jobs,evaluatertype=args.evaluatertype)
+
                     if g == 0 and fid == 0:
                         print(fid,"init perform",env.init_pfm)
                         f = open(os.path.join(out_dir, "test_succeed.csv"), 'a')
@@ -258,7 +260,15 @@ def main():
                             
                             act_mask = np.copy(env.action_mask)
                             Q        = sess.run(modelNetwork.Q_, feed_dict={modelNetwork.inputs: [s]})
-                            action   = ma.masked_array(Q, mask=act_mask).argmax()
+                            
+                            """
+                               Best action == Best formulae for feature enginneering.
+                               we print on disk.
+                            
+                            
+                            """
+                            
+                            action   = ma.masked_array(Q, mask=act_mask).argmax()                            
                             print("best action name: " + str(env.action[action]))
                             print("best action: " + str(action))
                             s_next, reward = env.step(action)
