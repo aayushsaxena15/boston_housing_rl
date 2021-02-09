@@ -218,7 +218,7 @@ def main():
             f = open(os.path.join(out_dir,'loss.csv'),'a')
             f.write("%.8f,%.8f\n" % (result[1],result[2]))
             f.close()
-            predictions.append[result[2]
+            predictions.append[result[2]]
             #if  (g+1) % SAVE_INTERVAL == 0:
             path = saver.save(sess, os.path.join(model_dir, "model_%d.ckpt" % (g+1) ))
             path = saver.save(sess, os.path.join(out_dir, "model_%d.ckpt" % (g + 1)))
